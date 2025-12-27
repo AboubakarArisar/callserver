@@ -68,7 +68,10 @@ io.on('connection', (socket) => {
   // Relay WebRTC signaling messages
   socket.on('signal', (data) => {
     console.log('Relaying signal from', data.from, 'to', data.to, 'type:', data.type);
-    socket.to(data.to).emit('signal', { ...data, from: socket.id });
+    if (data.to !== socket.id) {
+      socket.to(data.to).emit("signal", { ...data, from: socket.id });
+    }
+
   });
   
   // Handle chat messages
